@@ -23,7 +23,7 @@ with open(csvpath, "r") as csvfile:
         data = list(csvreader)
 
 #The total number of months included in the dataset, count # of rows
-    num_rows = 0
+    num_rows = -1 #to account for the header
     for row in open(csvpath):
         num_rows += 1
 
