@@ -1,7 +1,7 @@
 import os
 import csv
 import numpy as np
-from numpy.core.fromnumeric import mean
+from numpy.core.fromnumeric import mean, sort
 
 csvpath = os.path.join('Resources', 'election_data.csv')
 
@@ -9,7 +9,7 @@ with open(csvpath, "r") as csvfile:
 
     # CSV reader specifies delimiter and variable that holds contents
     csvreader = csv.reader(csvfile, delimiter=',')
-
+    
     # Read the header row first (skip this step if there is now header)
     csv_header = next(csvreader)
     # print(f"CSV Header: {csv_header}")
@@ -24,15 +24,13 @@ with open(csvpath, "r") as csvfile:
     for row in open(csvpath):
         num_rows += 1
 
-    print(f"Total Votes: {num_rows}")
-
 #A complete list of candidates who received votes
     candidates = []
     i = ["Voter ID", "County", "Candidate"]
     for row in data:
         candidates.append(row[2])
-    uniquecand = (list(set(candidates)))
-
+    uniquecand = sort(list(set(candidates)))
+    #print(uniquecand)
 #The total number of votes each candidate won
     khan = 0
     correy = 0
@@ -57,5 +55,40 @@ with open(csvpath, "r") as csvfile:
 #The winner of the election based on popular vote.
     winner = {"Khan": khanp, "Correy": correyp, "Li": lip, "O'Tooley": otooleyp}
     max_value = max(winner, key = winner.get)
-    print(max_value)
+    
+print("Election Votes")
+print("-----------------------------------")
+print(f"Total Votes: {num_rows}")
+print("-----------------------------------")
+print(f'{uniquecand[1]}: {khanp}% ({khan})')
+print(f'{uniquecand[0]}: {correyp}% ({correy})')
+print(f'{uniquecand[2]}: {lip}% ({li})')
+print(f'{uniquecand[3]}: {otooleyp}% ({otooley})')
+print("-----------------------------------")
+print(f'Winner: {max_value}')
+print("-----------------------------------")
 
+output_path = os.path.join("analysis", "polls.txt")
+f = open(output_path, "w")
+f.write("Election Votes")
+f.write("\n")
+f.write("-----------------------------------")
+f.write("\n")
+f.write(f"Total Votes: {num_rows}")
+f.write("\n")
+f.write("-----------------------------------")
+f.write("\n")
+f.write(f'{uniquecand[1]}: {khanp}% ({khan})')
+f.write("\n")
+f.write(f'{uniquecand[0]}: {correyp}% ({correy})')
+f.write("\n")
+f.write(f'{uniquecand[2]}: {lip}% ({li})')
+f.write("\n")
+f.write(f'{uniquecand[3]}: {otooleyp}% ({otooley})')
+f.write("\n")
+f.write("-----------------------------------")
+f.write("\n")
+f.write(f'Winner: {max_value}')
+f.write("\n")
+f.write("-----------------------------------")
+f.close()
