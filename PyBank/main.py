@@ -38,19 +38,23 @@ with open(csvpath, "r") as csvfile:
     print(f"Total: ${profloss}")
 
 #Calculate the changes in "Profit/Losses" over the entire period, then find the average of those changes
-    change = round((prls[-1] - prls[0])/len(prls), 2)
-    print(f"Average Change: ${change}")
+    change = []
+    for i in range(len(prls)-1):
+        change.append(prls[i+1] - prls[i])
+
+    print(f'Average Change: ${round(sum(change)/len(change), 2)}')
+
 
 #The greatest increase in profits (date and amount) over the entire period
-    maximum = max(prls)
-    indexing = prls.index(maximum)
-    increasepr = dates[indexing]
+    maximum = max(change)
+    indexing = change.index(maximum)
+    increasepr = dates[indexing +1]
     print(f"Greatest Increase in Profits: {increasepr} (${maximum})")
 
 #The greatest decrease in profits (date and amount) over the entire period
-    minimum = min(prls)
-    indexing2 = prls.index(minimum)
-    increasepr2 = dates[indexing2]
+    minimum = min(change)
+    indexing2 = change.index(minimum)
+    increasepr2 = dates[indexing2 +1]
     print(f"Greatest Decrease in Profits: {increasepr2} (${minimum})")
 
 #write txt file
@@ -64,7 +68,7 @@ f.write((f"Total Months: {num_rows}"))
 f.write("\n")
 f.write((f"Total: ${profloss}"))
 f.write("\n")
-f.write((f"Average Change: ${change}"))
+f.write(f'Average Change: ${round(sum(change)/len(change), 2)}')
 f.write("\n")
 f.write((f"Greatest Increase in Profits: {increasepr}, (${maximum})"))
 f.write("\n")
